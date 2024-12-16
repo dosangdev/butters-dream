@@ -1,4 +1,4 @@
-import { cn } from "@/app/utils/classnames";
+import { cn } from "@/utils/classnames";
 import { motion } from "framer-motion";
 import React from "react";
 import logo from "@brainlet/logo.png";
