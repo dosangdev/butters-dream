@@ -91,9 +91,8 @@ export default function useBuySell(
           debug: (e) => {
             console.log(e);
           },
-          onSuccess: () => {
-            onSuccess();
-            const txHash = writeContract({
+          onSuccess: async () => {
+            const txHash = await writeContract({
               chainId: 8453,
               address: tokenAddress,
               abi: ERC20_ABI,
