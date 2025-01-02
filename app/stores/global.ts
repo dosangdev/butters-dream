@@ -6,7 +6,7 @@ type GlobalState = {
   account: `0x${string}` | null;
   userLoading: boolean;
   myPrice?: number;
-  list: `0x${string}`[];
+  token: `0x${string}`[];
   collapsed: boolean;
   tvl: Map<string, number>;
   showRoyaltyPopup: boolean;
@@ -15,7 +15,7 @@ type GlobalState = {
 export const useGlobalStore = create<GlobalState>((set) => ({
   account: null,
   userLoading: true,
-  list: [],
+  token: [],
   collapsed: true,
   tvl: new Map(),
   showRoyaltyPopup: false,

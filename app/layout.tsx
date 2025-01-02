@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { JJIBBABBA, JJIBBABBA_Bold } from "@/fonts";
+import Header from "./components/Header";
+import ConTextProvider from "../context";
+import { headers } from "next/headers";
 
 const title = "Butter's Dream";
 const description =
@@ -17,17 +20,25 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const headersObj = await headers();
+  const cookies = headersObj.get("cookie");
+
   return (
     <html lang="en">
       <body
         className={`${JJIBBABBA.variable} ${JJIBBABBA_Bold.variable} antialiased bg-background`}
       >
-        {children}
+        <div className="bg-[url('/buttersDream/cludes.png')] bg-cover bg-center h-[100vh]">
+          <ConTextProvider cookies={cookies}>
+            <Header />
+            <div className="px-10 pt-20 w-full">{children}</div>
+          </ConTextProvider>
+        </div>
       </body>
     </html>
   );

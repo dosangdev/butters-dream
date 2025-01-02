@@ -6,17 +6,24 @@ import center from "@buttersDream/animation/center.png";
 import butterflyLeft from "@buttersDream/animation/butterfly-left.png";
 import butterflyRight from "@buttersDream/animation/butterfly-right.png";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import Header from "./components/Header";
+import useNftList from "./hooks/useNftList";
+import ConnectButton from "./components/ConnectButton";
 
 export default function Home() {
   const [clicked, setClicked] = useState(false);
+  const { token, refresh } = useNftList();
+  console.log(token);
 
   return (
-    <main className="flex relative w-full min-h-screen overflow-clip flex-col items-center justify-center font-jjibbabba bg-[url('/buttersDream/cludes.png')] bg-cover bg-center">
+    <main className="flex relative w-full  overflow-clip flex-col items-center justify-center font-jjibbabba ">
+      <ConnectButton />
+
       {clicked ? (
         <div className="text-black">qweqwe</div>
       ) : (
-        <div className="flex flex-col relative h-[100vh] items-center w-full justify-center">
+        <div className="flex flex-col relative h-[80vh] items-center w-full">
           <Image
             src={logo}
             alt="Butter's Dream"

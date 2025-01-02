@@ -1,7 +1,7 @@
 import { cn } from "@/utils/classnames";
 import { motion } from "framer-motion";
 import React from "react";
-import logo from "@brainlet/logo.png";
+import logo from "@buttersDream/logo.png";
 import Image from "next/image";
 
 export default function Loading() {
