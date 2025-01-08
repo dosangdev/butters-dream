@@ -1,11 +1,12 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
 import { projectId, wagmiAdapter } from "../config";
 import { createAppKit } from "@reown/appkit/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { mainnet, base } from "@reown/appkit/networks";
+import { createContext } from "vm";
 
 const queryClient = new QueryClient();
 

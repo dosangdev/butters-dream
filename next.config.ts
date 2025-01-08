@@ -1,11 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  webpack: (config) => {
-    config.externals.push("pino-pretty", "lokijs", "encoding");
+  /* config options here */
+
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ["@svgr/webpack"],
+    });
     return config;
   },
-  /* config options here */
   images: {
     domains: ["mint-club-v2.s3.us-west-2.amazonaws.com"],
   },

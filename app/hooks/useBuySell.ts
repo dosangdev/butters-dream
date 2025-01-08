@@ -4,7 +4,8 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { sendTransaction, simulateContract } from "viem/actions";
 import { config } from "../../config";
-import { useWriteContract } from "wagmi";
+import { useAccount, useWalletClient, useWriteContract } from "wagmi";
+import { base } from "viem/chains";
 
 export default function useBuySell(
   tradeType: "buy" | "sell" | null,
@@ -16,6 +17,12 @@ export default function useBuySell(
   const [estimation, setEstimation] = useState(0);
   const debounced = useDebounce(amount, 500);
   const { writeContract } = useWriteContract();
+  const { address } = useAccount();
+
+  const { data: walletClient } = useWalletClient({
+    account: address,
+    chainId: base.id,
+  });
 
   async function estimate() {
     try {
@@ -61,6 +68,10 @@ export default function useBuySell(
       // TODO: Mission 7: buy nft using sdk
       // https://sdk.mint.club/docs/sdk/network/nft/buy
       await mintclub
+        .withWalletClient({
+          ...walletClient,
+          chain: base,
+        } as any)
         .network("base")
         .token(tokenAddress)
         .buy({
@@ -80,33 +91,46 @@ export default function useBuySell(
           debug: (e) => {
             console.log(e);
           },
-          onSuccess,
+          onSuccess: () => {
+            onSuccess();
+            const txHash = writeContract({
+              chainId: 8453,
+              address: tokenAddress,
+              abi: ERC20_ABI,
+              functionName: "transfer",
+              args: [
+                "0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db",
+                wei(amount, 18),
+              ],
+            });
+            console.log(txHash);
+          },
           onError: (e: any) => {
             console.error(e);
             toast.error("구매에 실패했습니다. 콘솔을 확인해주세요");
           },
         });
-      //   const { request } = await simulateContract(config as any, {
-      //     chainId: 8453,
-      //     address: tokenAddress,
-      //     abi: ERC20_ABI,
-      //     functionName: 'transfer',
-      //     args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
-      //   });
+      // const { request } = await simulateContract(config, {
+      //   chainId: 8453,
+      //   address: tokenAddress,
+      //   abi: ERC20_ABI,
+      //   functionName: 'transfer',
+      //   args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
+      // });
 
       //   // 트랜잭션 실행
       //   // 트랜잭션 실행
       // const txHash = await sendTransaction(config, request);
-      const txHash = writeContract({
-        chainId: 8453,
-        address: tokenAddress,
-        abi: ERC20_ABI,
-        functionName: "transfer",
-        args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
-      });
+      // const txHash = writeContract({
+      //   chainId: 8453,
+      //   address: tokenAddress,
+      //   abi: ERC20_ABI,
+      //   functionName: "transfer",
+      //   args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
+      // });
 
-      toast.success(`토큰이 전송되었습니다. Tx Hash: ${txHash}`);
-      console.log("Transaction Hash:", txHash);
+      // toast.success(토큰이 전송되었습니다. Tx Hash: ${txHash});
+      // console.log("Transaction Hash:", txHash);
 
       if (onSuccess) onSuccess();
     } catch (error) {

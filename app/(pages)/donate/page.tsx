@@ -11,7 +11,7 @@ import { customShortenNumber } from "@/utils/strings";
 import { useAppKitAccount } from "@reown/appkit/react";
 import toast from "react-hot-toast";
 
-export default function ButterDesk() {
+export default function DonatePage() {
   const [tokenData, setTokenData] = useState(null); // API 데이터 저장
   const [tradeType, setTradeType] = useState<"buy" | "sell" | null>("buy");
   const [input, setInput] = useState(0);
@@ -43,14 +43,14 @@ export default function ButterDesk() {
             <span>1 USDC의 현재 미국 달러(USD) 기준 가격</span>
           </div>
         </div>
-
-        <Image
-          src={nftDetail?.image || ""}
-          alt="butter coin logo!"
-          width={100}
-          height={100}
-        />
-
+        {nftDetail?.image && (
+          <Image
+            src={nftDetail.image}
+            alt="butter coin logo!"
+            width={100}
+            height={100}
+          />
+        )}
         <div className="flex w-full mt-5 gap-2 justify-between">
           {/* 차트 영역 */}
           <div className="flex-1 max-w-[770px] min-w-[300px]">

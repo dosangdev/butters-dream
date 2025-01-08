@@ -5,33 +5,96 @@ import logo from "@buttersDream/logo.png";
 import center from "@buttersDream/animation/center.png";
 import butterflyLeft from "@buttersDream/animation/butterfly-left.png";
 import butterflyRight from "@buttersDream/animation/butterfly-right.png";
+import butter3 from "@buttersDream/butter3.svg";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import useNftList from "./hooks/useNftList";
-import ConnectButton from "./components/ConnectButton";
+// import ConnectButton from "./components/ConnectButton";
+import Button from "./components/Button";
+import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
+import { useAccount } from "wagmi";
+import ButtonSvg from "@buttersDream/Button.svg";
+import Link from "next/link";
+import { NeynarAPIClient, Configuration } from "@neynar/nodejs-sdk";
+import { useGlobalStore } from "./stores/global";
 
 export default function Home() {
+  const account = useGlobalStore((state) => state.account);
+  const [userData, setUserData] = useState(null);
   const [clicked, setClicked] = useState(false);
   const { token, refresh } = useNftList();
   console.log(token);
 
+  const variants = {
+    initial: { opacity: 0, scale: 0.8 },
+    animate: { opacity: 1, scale: 1 },
+    exit: { opacity: 0, scale: 0.8 },
+  };
+
+  const imageVariants = {
+    initial: { x: 0, opacity: 0 },
+    animate: { x: 0, opacity: 1, transition: { duration: 0.8 } },
+    exit: { x: -100, opacity: 0, transition: { duration: 0.5 } },
+  };
+
+  useEffect(() => {
+    async function fetchUser() {
+      if (!account) return;
+
+      try {
+        const res = await fetch(`/api/lookup-user?walletAddress=${account}`);
+        const data = await res.json();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    }
+
+    fetchUser();
+  }, [account]);
+
   return (
     <main className="flex relative w-full  overflow-clip flex-col items-center justify-center font-jjibbabba ">
-      <ConnectButton />
-
       {clicked ? (
-        <div className="text-black">qweqwe</div>
+        <motion.div
+          className="flex flex-col relative h-[80vh] p-20 items-center w-full"
+          key="content"
+          initial="initial"
+          animate="animate"
+          exit="exit"
+          variants={variants}
+        >
+          <motion.div>
+            <span className="text-black absolute top-[20%] left-[41%] text-3xl">
+              Pls make me fly!
+            </span>
+            <motion.div
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              variants={imageVariants}
+              className="flex flex-col items-center"
+            >
+              <Image
+                src={butter3}
+                alt="Butter's image in center"
+                width={147}
+                height={100}
+                className="pt-44 pb-20"
+              />
+            </motion.div>
+            <div className="w-full text-black h-36">qqq</div>
+            <div className="flex justify-center gap-6 mt-8">
+              <Link href="/donate">
+                <Button label="Get started" width={200} height={50} />
+              </Link>
+              <Button label="Learn more" width={200} height={50} />
+            </div>
+          </motion.div>
+        </motion.div>
       ) : (
-        <div className="flex flex-col relative h-[80vh] items-center w-full">
-          <Image
-            src={logo}
-            alt="Butter's Dream"
-            width={340}
-            height={270}
-            className="select-none"
-          ></Image>
-
+        <div className="flex flex-col relative h-[80vh] p-20 items-center w-full">
           <motion.div
             className="relative cursor-pointer"
             onClick={() => setClicked(!clicked)}
@@ -82,6 +145,7 @@ export default function Home() {
               />
             </motion.div>
 
+            {/* <ConnectButton label="qqqqqqq" width={180} height={47} /> */}
             {/* 오른쪽 애니메이션 이미지2 */}
             <motion.div
               initial={{ x: 100, opacity: 0 }}
