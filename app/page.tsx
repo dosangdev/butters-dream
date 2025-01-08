@@ -59,6 +59,7 @@ export default function Home() {
             <span className="text-black absolute top-[20%] left-[41%] text-3xl">
               Pls make me fly!
             </span>
+
             <motion.div
               initial="initial"
               animate="animate"
