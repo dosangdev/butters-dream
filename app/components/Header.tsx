@@ -1,5 +1,6 @@
 "use client";
 
+import { useGlobalStore } from "@/stores/global";
 import { abbreviateAddress } from "@/utils/strings";
 import ButtonSvg from "@buttersDream/Button.svg";
 import logo from "@buttersDream/logo.png";
@@ -16,15 +17,6 @@ import Link from "next/link";
 
 export default function Header({ hide }: { hide?: boolean }) {
   const modal = useAppKit();
-  // const { setTheme } = useTheme()
-  // const pathname = usePathname();
-
-  // // '/'에서만 Header 숨기기
-  // const showHeader = pathname !== "/" && !hide;
-
-  // if (!showHeader) {
-  //   return null; // '/' 경로에서는 아무것도 렌더링하지 않음
-  // }
 
   return (
     <div
@@ -74,6 +66,7 @@ const ConnectButton: React.FC<ButtonProps> = ({ label, width, height }) => {
   const modal = useAppKit();
 
   const { address, isConnected } = useAppKitAccount();
+
   // console.log("========== Account Information ==========");
   // console.log(`Address: ${address}`);
   // console.log(`Addresses: ${JSON.stringify(addresses, null, 2)}`);
