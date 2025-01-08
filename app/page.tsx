@@ -39,12 +39,7 @@ export default function Home() {
   };
 
   const { data: userData, error } = useSWR(
-    account ? `/api/lookup-user?walletAddress=${account}` : null,
-    async (url) => {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error("Failed to fetch user data");
-      return res.json();
-    }
+    account ? `/api/lookup-user?walletAddress=${account}` : null
   );
 
   console.log(userData);

@@ -4,6 +4,7 @@ import { JJIBBABBA, JJIBBABBA_Bold } from "@/fonts";
 import Header from "./components/Header";
 import ConTextProvider from "../context";
 import { headers } from "next/headers";
+import ClientSWRConfig from "./ClientSWRConfig";
 
 const title = "Butter's Dream";
 const description =
@@ -34,8 +35,10 @@ export default async function RootLayout({
       >
         <div className="bg-[url('/buttersDream/cludes.png')] bg-cover bg-center h-[100vh]">
           <ConTextProvider cookies={cookies}>
-            <Header />
-            <div className="px-10 pt-20 w-full">{children}</div>
+            <ClientSWRConfig>
+              <Header />
+              <div className="px-10 pt-20 w-full">{children}</div>
+            </ClientSWRConfig>
           </ConTextProvider>
         </div>
       </body>
