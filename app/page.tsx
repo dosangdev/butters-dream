@@ -39,10 +39,10 @@ export default function Home() {
   };
 
   const { data: userData, error } = useSWR(
-    account ? `/lookup-user?walletAddress=${account}` : null
+    account ? `/api/lookup-user?walletAddress=${account}` : null
   );
 
-  console.log(userData);
+  console.log(userData, "userData");
 
   return (
     <main className="flex relative w-full  overflow-clip flex-col items-center justify-center font-jjibbabba ">
@@ -59,7 +59,6 @@ export default function Home() {
             <span className="text-black absolute top-[20%] left-[41%] text-3xl">
               Pls make me fly!
             </span>
-
             <motion.div
               initial="initial"
               animate="animate"
