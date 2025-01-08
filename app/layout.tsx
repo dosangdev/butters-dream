@@ -20,21 +20,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerObj = await headers();
-  const cookies = headerObj.get("cookie");
-
   return (
     <html lang="en">
       <body
         className={`${JJIBBABBA.variable} ${JJIBBABBA_Bold.variable} antialiased bg-background`}
       >
         <div className="bg-[url('/buttersDream/cludes.png')] bg-cover bg-center h-[100vh]">
-          <ConTextProvider cookies={cookies}>
+          <ConTextProvider cookies={null}>
             <ClientSWRConfig>
               <Header />
               <div className="px-10 pt-20 w-full">{children}</div>
