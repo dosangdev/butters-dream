@@ -1,31 +1,21 @@
 "use client";
 
-import Link from "next/link";
-import center from "../../public/favicon.ico";
-import logo from "@buttersDream/logo.png";
-import { usePathname } from "next/navigation";
-import "@reown/appkit-wallet-button/react";
-import "@reown/appkit-wallet-button/react";
-import { useAppKitAccount } from "@reown/appkit/react";
-import Image from "next/image";
+import { abbreviateAddress } from "@/utils/strings";
 import ButtonSvg from "@buttersDream/Button.svg";
+import logo from "@buttersDream/logo.png";
 import "@reown/appkit-wallet-button/react";
 import {
   useAppKit,
+  useAppKitAccount,
   useAppKitNetwork,
   useAppKitTheme,
   useDisconnect,
 } from "@reown/appkit/react";
-import { useAccount } from "wagmi";
-import { abbreviateAddress } from "@/utils/strings";
-import { useEffect } from "react";
-import { useGlobalStore } from "@/stores/global";
+import Image from "next/image";
+import Link from "next/link";
 
 export default function Header({ hide }: { hide?: boolean }) {
   const modal = useAppKit();
-  const { disconnect } = useDisconnect();
-  const { switchNetwork } = useAppKitNetwork();
-  const { themeMode, setThemeMode } = useAppKitTheme();
   // const { setTheme } = useTheme()
   // const pathname = usePathname();
 
@@ -36,9 +26,6 @@ export default function Header({ hide }: { hide?: boolean }) {
   //   return null; // '/' 경로에서는 아무것도 렌더링하지 않음
   // }
 
-  function openAppKit() {
-    modal.open();
-  }
   return (
     <div
       className={`px-14 flex absolute top-0 z-[40000] w-screen flex-row items-center justify-between sm:gap-5 py-5 bg-transparent text-sm md:text-lg`}

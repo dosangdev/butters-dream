@@ -41,11 +41,16 @@ const modal = createAppKit({
 
 function ConTextProvider({
   children,
+  cookies,
 }: // cookies,
 {
   children: ReactNode;
+  cookies: string | null;
 }) {
-  const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig as Config);
+  const initialState = cookieToInitialState(
+    wagmiAdapter.wagmiConfig as Config,
+    cookies
+  );
 
   return (
     <WagmiProvider

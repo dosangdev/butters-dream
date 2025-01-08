@@ -10,6 +10,7 @@ import { AnimatePresence, motion, Variants } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import Header from "./components/Header";
 import useNftList from "./hooks/useNftList";
+import useSWR from "swr";
 // import ConnectButton from "./components/ConnectButton";
 import Button from "./components/Button";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
@@ -21,7 +22,6 @@ import { useGlobalStore } from "./stores/global";
 
 export default function Home() {
   const { address: account } = useAppKitAccount();
-  const [userData, setUserData] = useState(null);
   const [clicked, setClicked] = useState(false);
   const { token, refresh } = useNftList();
   console.log(token);
@@ -38,21 +38,16 @@ export default function Home() {
     exit: { x: -100, opacity: 0, transition: { duration: 0.5 } },
   };
 
-  useEffect(() => {
-    async function fetchUser() {
-      if (!account) return;
-
-      try {
-        const res = await fetch(`/api/lookup-user?walletAddress=${account}`);
-        const data = await res.json();
-        setUserData(data);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
+  const { data: userData, error } = useSWR(
+    account ? `/api/lookup-user?walletAddress=${account}` : null,
+    async (url) => {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error("Failed to fetch user data");
+      return res.json();
     }
+  );
 
-    fetchUser();
-  }, [account]);
+  console.log(userData);
 
   return (
     <main className="flex relative w-full  overflow-clip flex-col items-center justify-center font-jjibbabba ">
