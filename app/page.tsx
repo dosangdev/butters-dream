@@ -39,7 +39,7 @@ export default function Home() {
   };
 
   const { data: userData, error } = useSWR(
-    account ? `/api/lookup-user?walletAddress=${account}` : null
+    account ? `/lookup-user?walletAddress=${account}` : null
   );
 
   console.log(userData);

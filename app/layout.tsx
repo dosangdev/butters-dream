@@ -3,7 +3,6 @@ import "./globals.css";
 import { JJIBBABBA, JJIBBABBA_Bold } from "@/fonts";
 import Header from "./components/Header";
 import ConTextProvider from "../context";
-import { headers } from "next/headers";
 import ClientSWRConfig from "./ClientSWRConfig";
 
 const title = "Butter's Dream";
