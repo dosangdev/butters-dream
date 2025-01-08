@@ -1,12 +1,12 @@
 import { BUTTER_TOKEN_ADDRESS } from "@/constants";
-import useWallet from "@/hooks/useWallet";
+import { useAppKitAccount } from "@reown/appkit/react";
 import { mintclub } from "mint.club-v2-sdk";
 import { useEffect, useState } from "react";
 
 export default function useNftBalance(tokenAddress: `0x${string}`) {
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
-  const { account } = useWallet();
+  const { address: account } = useAppKitAccount();
 
   async function getBalance() {
     if (tokenAddress && account) {

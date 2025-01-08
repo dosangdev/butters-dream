@@ -1,13 +1,13 @@
-import useWallet from '@/hooks/useWallet';
-import { ERC20_ABI, mintclub, toNumber } from 'mint.club-v2-sdk';
-import { useEffect, useState } from 'react';
-import { createPublicClient, http } from 'viem';
-import { base } from 'viem/chains';
+import { useAppKitAccount } from "@reown/appkit/react";
+import { ERC20_ABI, mintclub, toNumber } from "mint.club-v2-sdk";
+import { useEffect, useState } from "react";
+import { createPublicClient, http } from "viem";
+import { base } from "viem/chains";
 
 export default function useERC20Balance(tokenAddress: `0x${string}`) {
   const [loading, setLoading] = useState(false);
   const [balance, setBalance] = useState(0);
-  const { account } = useWallet();
+  const { address: account } = useAppKitAccount();
 
   async function getBalance() {
     if (tokenAddress && account) {
@@ -38,7 +38,7 @@ export default function useERC20Balance(tokenAddress: `0x${string}`) {
 
         // 이거를 좀더 쉽게 SDK 로 호출하려면 👇
         const balance = await mintclub
-          .network('base')
+          .network("base")
           .token(tokenAddress)
           .getBalanceOf(account);
 

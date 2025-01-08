@@ -1,11 +1,11 @@
 import { BUTTER_TOKEN_ADDRESS } from "@/constants/index";
-import useWallet from "@/hooks/useWallet";
 import { useGlobalStore } from "@/stores/global";
 import { mintclub, toNumber } from "mint.club-v2-sdk";
 import { useEffect, useState } from "react";
+import { useAppKitAccount } from "@reown/appkit/react";
 
 export default function useProfile() {
-  const { account } = useWallet();
+  const { address: account } = useAppKitAccount();
 
   const [checking, setChecking] = useState(true);
 

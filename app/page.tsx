@@ -20,7 +20,7 @@ import { NeynarAPIClient, Configuration } from "@neynar/nodejs-sdk";
 import { useGlobalStore } from "./stores/global";
 
 export default function Home() {
-  const account = useGlobalStore((state) => state.account);
+  const { address: account } = useAppKitAccount();
   const [userData, setUserData] = useState(null);
   const [clicked, setClicked] = useState(false);
   const { token, refresh } = useNftList();

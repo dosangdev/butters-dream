@@ -86,8 +86,7 @@ interface ButtonProps {
 const ConnectButton: React.FC<ButtonProps> = ({ label, width, height }) => {
   const modal = useAppKit();
 
-  const { address, isConnected } = useAccount();
-  const setAccount = useGlobalStore((state) => state.setAccount);
+  const { address, isConnected } = useAppKitAccount();
   // console.log("========== Account Information ==========");
   // console.log(`Address: ${address}`);
   // console.log(`Addresses: ${JSON.stringify(addresses, null, 2)}`);
@@ -98,7 +97,6 @@ const ConnectButton: React.FC<ButtonProps> = ({ label, width, height }) => {
   // console.log(`Is Reconnecting: ${isReconnecting}`);
   // console.log(`Status: ${status}`);
   // console.log("=========================================");
-  const appKitAccount = useAppKitAccount();
 
   const compactHash = (hash: string) =>
     hash.slice(0, 6) + "..." + hash.slice(-4);
@@ -106,15 +104,6 @@ const ConnectButton: React.FC<ButtonProps> = ({ label, width, height }) => {
   function openAppKit() {
     modal.open();
   }
-
-  // Zustand 상태 업데이트
-  useEffect(() => {
-    if (isConnected && address) {
-      setAccount(address as `0x${string}`);
-    } else {
-      setAccount(null);
-    }
-  }, [isConnected, address, setAccount]);
 
   return (
     <>

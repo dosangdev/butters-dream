@@ -31,27 +31,21 @@ const modal = createAppKit({
   // defaultNetwork: mainnet,
   metadata,
   features: {
+    email: false,
     analytics: true,
-    email: true,
-    socials: ["google", "x", "github", "discord", "farcaster"],
-    // socials: ["google"],
-    emailShowWallets: true,
+    socials: [],
   },
   themeMode: "dark",
   debug: true,
 });
 
-export default function ConTextProvider({
+function ConTextProvider({
   children,
-  cookies,
-}: {
+}: // cookies,
+{
   children: ReactNode;
-  cookies: string | null;
 }) {
-  const initialState = cookieToInitialState(
-    wagmiAdapter.wagmiConfig as Config,
-    cookies
-  );
+  const initialState = cookieToInitialState(wagmiAdapter.wagmiConfig as Config);
 
   return (
     <WagmiProvider
@@ -62,3 +56,5 @@ export default function ConTextProvider({
     </WagmiProvider>
   );
 }
+
+export default ConTextProvider;
