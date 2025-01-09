@@ -19,12 +19,17 @@ import ButtonSvg from "@buttersDream/Button.svg";
 import Link from "next/link";
 import { NeynarAPIClient, Configuration } from "@neynar/nodejs-sdk";
 import { useGlobalStore } from "./stores/global";
+import { getDominantColor } from "./utils/getDominantColor";
+import GetWalletLogs from "./utils/getWalletLogs";
 
 export default function Home() {
   const { address: account } = useAppKitAccount();
   const [clicked, setClicked] = useState(false);
-  const { token, refresh } = useNftList();
-  console.log(token);
+  const [dominantColor, setDominantColor] = useState<
+    [number, number, number] | null
+  >(null);
+
+  // Wallet Logs 가져오기
 
   const variants = {
     initial: { opacity: 0, scale: 0.8 },
@@ -38,11 +43,25 @@ export default function Home() {
     exit: { x: -100, opacity: 0, transition: { duration: 0.5 } },
   };
 
+  /* butter지갑 거래 내역 가져오기 */
+  const { data: logs } = useSWR(`/api/get-wallet-logs`);
+  console.log(logs);
+
+  /* wrapcast 계정 정보 가져오기  */
   const { data: userData, error } = useSWR(
     account ? `/api/lookup-user?walletAddress=${account}` : null
   );
 
-  console.log(userData, "userData");
+  /* 이미지의 색깔 가져오기 rgb */
+  useEffect(() => {
+    if (userData) {
+      getDominantColor(userData[0].pfp_url)
+        .then((color) => setDominantColor(color))
+        .catch((error) =>
+          console.error("Error extracting dominant color:", error)
+        );
+    }
+  }, [userData]);
 
   return (
     <main className="flex relative w-full  overflow-clip flex-col items-center justify-center font-jjibbabba ">
@@ -74,7 +93,16 @@ export default function Home() {
                 className="pt-44 pb-20"
               />
             </motion.div>
-            <div className="w-full text-black h-36">qqq</div>
+            <div
+              className="w-full text-black h-36"
+              style={{
+                backgroundColor: dominantColor
+                  ? `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
+                  : "transparent", // 기본값으로 투명색
+              }}
+            >
+              qqq
+            </div>
             <div className="flex justify-center gap-6 mt-8">
               <Link href="/donate">
                 <Button label="Get started" width={200} height={50} />
@@ -135,7 +163,6 @@ export default function Home() {
               />
             </motion.div>
 
-            {/* <ConnectButton label="qqqqqqq" width={180} height={47} /> */}
             {/* 오른쪽 애니메이션 이미지2 */}
             <motion.div
               initial={{ x: 100, opacity: 0 }}

@@ -109,27 +109,6 @@ export default function useBuySell(
             toast.error("구매에 실패했습니다. 콘솔을 확인해주세요");
           },
         });
-      // const { request } = await simulateContract(config, {
-      //   chainId: 8453,
-      //   address: tokenAddress,
-      //   abi: ERC20_ABI,
-      //   functionName: 'transfer',
-      //   args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
-      // });
-
-      //   // 트랜잭션 실행
-      //   // 트랜잭션 실행
-      // const txHash = await sendTransaction(config, request);
-      // const txHash = writeContract({
-      //   chainId: 8453,
-      //   address: tokenAddress,
-      //   abi: ERC20_ABI,
-      //   functionName: "transfer",
-      //   args: ["0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db", wei(amount, 18)],
-      // });
-
-      // toast.success(토큰이 전송되었습니다. Tx Hash: ${txHash});
-      // console.log("Transaction Hash:", txHash);
 
       if (onSuccess) onSuccess();
     } catch (error) {

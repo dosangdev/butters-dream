@@ -93,7 +93,7 @@ const ConnectButton: React.FC<ButtonProps> = ({ label, width, height }) => {
             className="border-2 border-black rounded-md w-[180] h-[47px] text-black "
             onClick={openAppKit}
           >
-            {isConnected ? abbreviateAddress(address) : ""}
+            {abbreviateAddress(address) || ""}
           </button>
         </>
       ) : (
