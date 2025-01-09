@@ -21,6 +21,7 @@ import { NeynarAPIClient, Configuration } from "@neynar/nodejs-sdk";
 import { useGlobalStore } from "./stores/global";
 import { getDominantColor } from "./utils/getDominantColor";
 import GetWalletLogs from "./utils/getWalletLogs";
+import { decodeEventLog, erc20Abi } from "viem";
 
 export default function Home() {
   const { address: account } = useAppKitAccount();
@@ -45,7 +46,25 @@ export default function Home() {
 
   /* butter지갑 거래 내역 가져오기 */
   const { data: logs } = useSWR(`/api/get-wallet-logs`);
-  console.log(logs);
+  const { result } = logs || {};
+
+  const decodedLogs = result?.reduce((acc: any, log: any) => {
+    const { data, topics } = log;
+    const decoded = decodeEventLog({
+      abi: erc20Abi,
+      data: data,
+      topics: topics,
+    });
+    const { eventName, args } = decoded || {};
+    if (eventName !== "Transfer") return;
+
+    const { to, from } = args;
+    if (to === "0xc683F61BFE08bfcCde53A41f4607B4A1B72954Db") {
+      acc.push(decoded);
+    }
+    return acc;
+  }, []);
+  console.log(decodedLogs);
 
   /* wrapcast 계정 정보 가져오기  */
   const { data: userData, error } = useSWR(

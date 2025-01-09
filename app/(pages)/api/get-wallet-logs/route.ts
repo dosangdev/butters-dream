@@ -3,7 +3,7 @@ import ky from "ky";
 
 export async function GET() {
   try {
-    const apikey = process.env.NEXT_PUBLIC_BASESCAN_API_KEY;
+    const apikey = process.env.BASESCAN_API_KEY;
 
     const response = await ky.get(`https://api.basescan.org/api
 ?module=logs
